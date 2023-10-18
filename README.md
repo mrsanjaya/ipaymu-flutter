@@ -1,15 +1,40 @@
-# ipaymu
-Un-official
-Payment Gateway Ipaymu
 
-## Getting Started
+# Ipaymu Flutter (Un-official)
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+This plugin is for connecting Flutter with payment gateway (IPAYMU)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+## Usage/Examples
+
+Get Payment List
+```dart
+var ipaymu = Ipaymu(vaNumber: "YOUR_VA_NUMBER", apiKey: "YOUR_API_KEY");
+paymentMethodModel list = await ipaymu.getPaymentList();
+```
+
+Direct Payment
+```dart
+var body = {
+    'name': 'Buyer',
+    'phone': '081999501092',
+    'email': 'buyer@mail.com',
+    'amount': '10000',
+    'notifyUrl': 'https://mywebsite.com',
+    'expired': '24',
+    'comments': 'Payment to XYZ',
+    'referenceId': '1',
+    'paymentMethod': 'cc',
+    'paymentChannel': 'cc',
+    'feeDirection': 'BUYER'
+};
+
+var ipaymu = Ipaymu(vaNumber: "YOUR_VA_NUMBER", apiKey: "YOUR_API_KEY");
+directPaymentModel payment = await ipaymu.directPayment(body);
+```
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
 
