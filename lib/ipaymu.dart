@@ -21,7 +21,10 @@ class Ipaymu {
   String? notifyUrl;
   String apiKey;
   String vaNumber;
-  Ipaymu({required this.vaNumber, required this.apiKey, this.notifyUrl});
+  String sandboxUrl = "sandbox.ipaymu.com";
+  String prodUrl = "my.ipaymu.com";
+  bool sandbox;
+  Ipaymu({required this.vaNumber, required this.apiKey, this.notifyUrl, this.sandbox = false});
 
   String toSign(HTTPMETHOD, requestBody){
     var bytes = utf8.encode(requestBody);
@@ -46,7 +49,7 @@ class Ipaymu {
     dio.options.headers['signature'] = signature("GET", jsonEncode({}));
     dio.options.headers['va'] = vaNumber;
     dio.options.headers['timestamp'] = timestamp;
-    final response = await dio.get('https://sandbox.ipaymu.com/api/v2/payment-method-list');
+    final response = await dio.get('https://${ sandbox ? sandboxUrl : prodUrl }/api/v2/payment-method-list');
     return paymentMethodModel.fromJson(response.data);
   }
 
@@ -59,7 +62,7 @@ class Ipaymu {
     dio.options.headers['signature'] = signature("POST", jsonEncode(body));
     dio.options.headers['va'] = vaNumber;
     dio.options.headers['timestamp'] = timestamp;
-    final response = await dio.post('https://sandbox.ipaymu.com/api/v2/payment/direct', data: data);
+    final response = await dio.post('https://${ sandbox ? sandboxUrl : prodUrl }/api/v2/payment/direct', data: data);
     return directPaymentModel.fromJson(response.data);
   }
 }
